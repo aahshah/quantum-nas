@@ -107,7 +107,7 @@ HARDWARE_SPECS = {
     )
 }
 
-# PART 2: ARCHITECTURE REPRESENTATION
+
 
 @dataclass
 class QuantumLayer:
@@ -179,7 +179,7 @@ class HybridArchitecture:
     def get_signature(self) -> str:
         return json.dumps(self.to_dict(), sort_keys=True)
 
-# PART 3: ARCHITECTURE SAMPLER
+
 
 class ArchitectureSampler:
     def __init__(self, hardware_spec: HardwareSpec, search_space: Optional[Dict] = None):
@@ -312,7 +312,7 @@ class ArchitectureSampler:
         
         return HybridArchitecture.from_dict(new_arch_dict)
 
-# PART 4: BIPARTITE GRAPH 
+
 
 @dataclass
 class BipartiteGraph:
@@ -468,8 +468,7 @@ class ImprovedBipartiteGraphBuilder:
             classical_nodes.append(feat)
         return classical_nodes
 
-#
-# PART 5: GRAPH TRANSFORMER PREDICTOR 
+
 
 class GraphTransformerLayer(nn.Module):
     def __init__(self, hidden_dim, num_heads, dropout=0.1):
@@ -749,7 +748,7 @@ class BaselineGNNPredictor(nn.Module):
         
         return h_new
 
-# Old GNN for reference (replaced)
+
 class ImprovedTypeAwareGNN(nn.Module):
     """Enhanced GNN with better training stability"""
     
