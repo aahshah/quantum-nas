@@ -1,0 +1,9 @@
+             Method  Acc Mean   Acc Std   Eng Mean   Eng Std
+0            Random  0.961566  0.036868   1.903691  0.749686
+1        GNN_Scalar  0.941025  0.041155   4.536110  2.955935
+2      Trans_Scalar  0.921615  0.036040   1.923007  0.799197
+3   GNN_NSGA (Best)  0.965767  0.014383  14.356865  0.516217
+4   Ours (Best Acc)  0.987455  0.002938  14.358931  0.515613
+5  Ours (Efficient)  0.917492  0.073685  14.357375  0.515509
+
+Paired T-Test (Ours vs GNN_NSGA): p-value = 0.02637

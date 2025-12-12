@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Logs and Temporary Output
+*.log
+*_output.txt
+debug_*.txt
+temp_*
+
+# OS Generated
+.DS_Store
+Thumbs.db

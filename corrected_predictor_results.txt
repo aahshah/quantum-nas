@@ -1,0 +1,3 @@
+Predictor,Accuracy_Spearman,Energy_Spearman
+GNN,-0.826,0.774
+Transformer,0.413,0.709

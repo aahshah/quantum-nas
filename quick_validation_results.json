@@ -1,0 +1,8 @@
+{
+  "gnn_acc_corr": -0.4516577951517347,
+  "trans_acc_corr": 0.49603838178427956,
+  "gnn_energy_corr": 0.931193279831996,
+  "trans_energy_corr": 0.6467636690917273,
+  "epochs": 20,
+  "n_samples": 1000
+}

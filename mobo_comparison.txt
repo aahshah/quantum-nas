@@ -1,0 +1,4 @@
+Method,Accuracy,Depth
+Standard_BO,0.990,7
+Multi_Obj_BO,0.990,2
+NSGA2,0.990,7

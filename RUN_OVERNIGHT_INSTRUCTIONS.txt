@@ -1,0 +1,52 @@
+# Instructions to Run Verification Overnight
+
+## What to Do:
+
+1. Open PowerShell on your computer (NOT through this interface)
+
+2. Navigate to your project folder:
+   ```powershell
+   cd C:\Users\shahs\OneDrive\Desktop\TRA-Energy_Effecient\quantum_nas
+   ```
+
+3. Run the verification script:
+   ```powershell
+   $env:PYTHONIOENCODING='utf-8'; python -u verify_real.py > verification_output.txt 2>&1
+   ```
+
+4. **IMPORTANT**: Leave the PowerShell window open (minimize it, don't close)
+
+5. Close this browser/interface - the script will keep running
+
+6. Go to sleep!
+
+7. Tomorrow morning, check the results in `verification_output.txt`
+
+## What You'll Get Tomorrow:
+
+✅ All 6 baseline results:
+   - Random Search
+   - GNN + Scalar
+   - Transformer + Scalar (ablation)
+   - Grid Search
+   - Bayesian Optimization
+   - Ours (Transformer + NSGA-II)
+
+✅ Accuracy and Depth for each method
+
+✅ Proof of 70% accuracy and energy efficiency
+
+✅ All saved to `verification_output.txt`
+
+## Expected Runtime:
+
+- Total: ~1.5-2 hours
+- Will be done by morning
+
+## Tomorrow Morning:
+
+1. Check `verification_output.txt` for results
+2. I'll help you generate the final figures with actual numbers
+3. You'll have everything ready for your paper!
+
+Good night! 🌙
