@@ -283,6 +283,8 @@ class HybridArchitecture:
     total_qubits: int = field(init=False)
     total_depth: int = field(init=False)
     trainable_params: int = field(init=False)
+    cost_type: str = 'local'  
+    init_strategy: str = 'random' 
     
     def __post_init__(self):
         self.total_qubits = max([ql.num_qubits for ql in self.quantum_layers]) if self.quantum_layers else 0
@@ -346,6 +348,7 @@ class ArchitectureSampler:
             raise ValueError("hardware_spec cannot be None")
         self.hardware = hardware_spec
         self.search_space = search_space or self._default_search_space()
+
     
     def _default_search_space(self) -> Dict:
         return {
@@ -366,6 +369,10 @@ class ArchitectureSampler:
                 'pooling': ['max', 'avg', 'none'],
                 'dropout': (0.0, 0.3)
             },
+            'quantum_extras': {
+                'cost_type': ['global', 'local'], 
+                'init_strategy': ['random', 'identity_biased']
+            },
             'interface': ['measurement', 'expectation'],
             'optimizer': ['adam', 'sgd', 'rmsprop'],
             'learning_rate': (1e-4, 1e-2),
@@ -384,6 +391,8 @@ class ArchitectureSampler:
                 parametrization=random.choice(self.search_space['quantum_layers']['parametrization'])
             ))
         
+        q_extras = self.search_space.get('quantum_extras', 
+                                   {'cost_type': ['local'], 'init_strategy': ['random']})
         n_c_layers = random.randint(*self.search_space['classical_layers']['num_layers'])
         classical_layers = []
         for _ in range(n_c_layers):
@@ -403,7 +412,9 @@ class ArchitectureSampler:
             optimizer=random.choice(self.search_space['optimizer']),
             learning_rate=float(10 ** random.uniform(np.log10(self.search_space['learning_rate'][0]),
                                                np.log10(self.search_space['learning_rate'][1]))),
-            batch_size=random.choice(self.search_space['batch_size'])
+            batch_size=random.choice(self.search_space['batch_size']),
+            cost_type=random.choice(q_extras['cost_type']),
+            init_strategy=random.choice(q_extras['init_strategy'])
         )
     
     def mutate(self, arch: HybridArchitecture, mutation_rate: float = 0.3) -> HybridArchitecture:
@@ -1377,16 +1388,33 @@ class QuantumCircuitSimulator:
             return 1.0
         
         total_depth = arch.total_depth
-        avg_qubits = np.mean([ql.num_qubits for ql in arch.quantum_layers])
+        n_qubits = max([ql.num_qubits for ql in arch.quantum_layers])
         
-        entanglement_scores = {'none': 0.0, 'linear': 0.3, 'circular': 0.5, 'full': 1.0}
-        avg_entanglement = np.mean([entanglement_scores[ql.entanglement] 
-                                    for ql in arch.quantum_layers])
+        # 1. Depth Risk (Base)
+        # Deep circuits are harder to train
+        depth_risk = 1.0 - np.exp(-0.15 * total_depth)
         
-        risk = 1.0 - np.exp(-0.1 * total_depth * avg_entanglement * np.log(avg_qubits + 1))
-        trainability = 1.0 - risk
+        # 2. Cost Function Factor (CRITICAL UPDATE)
+        # Global costs (e.g., all-qubit parity) cause exponential vanishing
+        # Local costs (single qubit measure) cause polynomial vanishing (better)
+        if hasattr(arch, 'cost_type') and arch.cost_type == 'global':
+             # Risk scales exponentially with qubits
+            cost_factor = np.log2(n_qubits + 1) * 0.5 
+        else:
+            # Local cost: Risk is constant wrt qubits (mostly), scales with depth
+            cost_factor = 1.0 
+            
+        # 3. Initialization Factor
+        # Identity biased initialization keeps start point away from BP
+        init_bonus = 0.2 if (hasattr(arch, 'init_strategy') and 
+                            arch.init_strategy == 'identity_biased') else 0.0
+
+        # Combine
+        # If global cost: high risk. If local cost: lower risk.
+        risk = depth_risk * cost_factor
+        trainability = 1.0 - np.clip(risk - init_bonus, 0.0, 1.0)
         
-        return max(0.0, min(1.0, trainability))
+        return float(trainability)
     
     def evaluate(self, arch, X_train, y_train, X_test, y_test, 
                  n_epochs: int = 20, quick_mode: bool = False,
