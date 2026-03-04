@@ -22,7 +22,7 @@ Recent Improvements:
 Author: Quantum NAS Research Team
 """
 
-#import torch
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 try:
@@ -1809,14 +1809,32 @@ class NSGA2Search:
                 'population_size': len(population)
             })
             
-        # Return Pareto front solutions
+        #Return Pareto front solutions
         final_scores = self._evaluate_population(population)
         final_fronts = self._fast_non_dominated_sort(final_scores)
-        pareto_solutions = [population[i] for i in final_fronts[0]]
-        
-        # Pick "best" compromise (highest accuracy with reasonable energy)
-        best_arch = max(pareto_solutions, key=lambda a: self._evaluate_single(a)['accuracy'])
-        
+        pareto_indices = final_fronts[0]
+        #pareto_indices = [population[i] for i in final_fronts[0]]
+
+
+       
+        feasible = []
+
+        for i in pareto_indices:
+            arch = population[i]
+            score = final_scores[i]
+
+            if score['trainability'] >= 0.50 and arch.total_depth <= 12:
+                feasible.append((arch, score))
+
+        # If nothing feasible,  pick best trainability
+        if len(feasible) == 0:
+            best_idx = max(pareto_indices,
+                           key=lambda i: final_scores[i]['trainability'])
+            best_arch = population[best_idx]
+        else:
+            # Pick highest accuracy among feasible
+            best_arch = max(feasible, key=lambda x: x[1]['accuracy'])[0]
+
         return best_arch, 0.0, history
 
     def _evaluate_single(self, arch):
