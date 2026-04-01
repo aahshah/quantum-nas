@@ -1,0 +1,552 @@
+{
+  "mode": "moqas_surrogate",
+  "note": "Objectives: maximize accuracy, minimize predicted depth (MOQAS), maximize -log(V_hat) with V_hat = 1 - trainability + eps from surrogate.",
+  "knee_point": {
+    "accuracy": 0.9190711975097656,
+    "depth": 8.735262751579285,
+    "neg_log_grad_var": 0.952338222317653,
+    "V_hat": 0.3858377933502197,
+    "trainability": 0.6141622066497803,
+    "architecture": {
+      "depth": 2,
+      "n_qubits": 10,
+      "entanglement": [
+        "circular"
+      ],
+      "rotation_gates": [
+        [
+          "RY"
+        ]
+      ],
+      "layer_depths": [
+        2
+      ],
+      "parametrization": [
+        "hardware-efficient"
+      ]
+    }
+  },
+  "pareto_front": [
+    {
+      "accuracy": 0.9088304042816162,
+      "depth": 9.121335744857788,
+      "neg_log_grad_var": 0.971318489504794,
+      "V_hat": 0.37858355045318604,
+      "trainability": 0.621416449546814,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 12,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RX",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9190289974212646,
+      "depth": 8.698990941047668,
+      "neg_log_grad_var": 0.9537111109019766,
+      "V_hat": 0.3853084444999695,
+      "trainability": 0.6146915555000305,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9286259412765503,
+      "depth": 10.024408102035522,
+      "neg_log_grad_var": 0.8957137089069493,
+      "V_hat": 0.40831607580184937,
+      "trainability": 0.5916839241981506,
+      "architecture": {
+        "depth": 3,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          3
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9269877672195435,
+      "depth": 9.734999537467957,
+      "neg_log_grad_var": 0.924424048635623,
+      "V_hat": 0.39675986766815186,
+      "trainability": 0.6032401323318481,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9235749840736389,
+      "depth": 9.754161834716797,
+      "neg_log_grad_var": 0.9361853780743162,
+      "V_hat": 0.3921207785606384,
+      "trainability": 0.6078792214393616,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 12,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RX",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9167454838752747,
+      "depth": 8.879120349884033,
+      "neg_log_grad_var": 0.9641843599070778,
+      "V_hat": 0.3812940716743469,
+      "trainability": 0.6187059283256531,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 11,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RX",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9159370064735413,
+      "depth": 8.862183690071106,
+      "neg_log_grad_var": 0.9648544240401608,
+      "V_hat": 0.3810386657714844,
+      "trainability": 0.6189613342285156,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9280688166618347,
+      "depth": 10.013952255249023,
+      "neg_log_grad_var": 0.9017161495087204,
+      "V_hat": 0.40587252378463745,
+      "trainability": 0.5941274762153625,
+      "architecture": {
+        "depth": 3,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          3
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9190711975097656,
+      "depth": 8.735262751579285,
+      "neg_log_grad_var": 0.952338222317653,
+      "V_hat": 0.3858377933502197,
+      "trainability": 0.6141622066497803,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 10,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9286240339279175,
+      "depth": 9.883090257644653,
+      "neg_log_grad_var": 0.9014058918036583,
+      "V_hat": 0.40599846839904785,
+      "trainability": 0.5940015316009521,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9190572500228882,
+      "depth": 8.734503984451294,
+      "neg_log_grad_var": 0.9523260183856231,
+      "V_hat": 0.385842502117157,
+      "trainability": 0.614157497882843,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 10,
+        "entanglement": [
+          "linear"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9272922277450562,
+      "depth": 9.921382665634155,
+      "neg_log_grad_var": 0.9133767977034866,
+      "V_hat": 0.40116727352142334,
+      "trainability": 0.5988327264785767,
+      "architecture": {
+        "depth": 3,
+        "n_qubits": 9,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          3
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9272604584693909,
+      "depth": 9.75859522819519,
+      "neg_log_grad_var": 0.920490699605894,
+      "V_hat": 0.39832353591918945,
+      "trainability": 0.6016764640808105,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9190289974212646,
+      "depth": 8.698990941047668,
+      "neg_log_grad_var": 0.9537111109019766,
+      "V_hat": 0.3853084444999695,
+      "trainability": 0.6146915555000305,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9272921085357666,
+      "depth": 9.921378493309021,
+      "neg_log_grad_var": 0.9133765005474628,
+      "V_hat": 0.4011673927307129,
+      "trainability": 0.5988326072692871,
+      "architecture": {
+        "depth": 3,
+        "n_qubits": 9,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RX",
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          3
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.915937066078186,
+      "depth": 8.86218786239624,
+      "neg_log_grad_var": 0.9648545804669353,
+      "V_hat": 0.3810386061668396,
+      "trainability": 0.6189613938331604,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9190711975097656,
+      "depth": 8.735262751579285,
+      "neg_log_grad_var": 0.952338222317653,
+      "V_hat": 0.3858377933502197,
+      "trainability": 0.6141622066497803,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 10,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9159370064735413,
+      "depth": 8.862183690071106,
+      "neg_log_grad_var": 0.9648544240401608,
+      "V_hat": 0.3810386657714844,
+      "trainability": 0.6189613342285156,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9272559285163879,
+      "depth": 9.758434891700745,
+      "neg_log_grad_var": 0.9204918967167866,
+      "V_hat": 0.39832305908203125,
+      "trainability": 0.6016769409179688,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    },
+    {
+      "accuracy": 0.9163258671760559,
+      "depth": 8.869239687919617,
+      "neg_log_grad_var": 0.9648092177276938,
+      "V_hat": 0.38105589151382446,
+      "trainability": 0.6189441084861755,
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 11,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RX",
+            "RZ"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      }
+    }
+  ],
+  "config": {
+    "pop_size": 20,
+    "generations": 15,
+    "dataset_samples": 120,
+    "predictor_epochs": 60
+  }
+}

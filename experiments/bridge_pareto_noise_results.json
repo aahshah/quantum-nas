@@ -1,0 +1,148 @@
+{
+  "source_moqas_json": "experiments/moqas_pareto_results.json",
+  "source_moqas_config": {
+    "pop_size": 20,
+    "generations": 15,
+    "dataset_samples": 120,
+    "predictor_epochs": 60
+  },
+  "noise_probability": 0.1,
+  "backend": "default.mixed",
+  "representatives": [
+    {
+      "label": "knee",
+      "score": {
+        "accuracy": 0.9190711975097656,
+        "depth": 8.735262751579285,
+        "neg_log_grad_var": 0.952338222317653
+      },
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 10,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      },
+      "channels": {
+        "depolarizing": {
+          "architecture_fidelity": 0.009353675323771255,
+          "baseline_depth6_linear_fidelity": 0.0013152268243367931,
+          "ratio_over_baseline": 7.111834362478025
+        },
+        "amplitude_damping": {
+          "architecture_fidelity": 0.08602455997590963,
+          "baseline_depth6_linear_fidelity": 0.01804449134771774,
+          "ratio_over_baseline": 4.767358542738307
+        },
+        "phase_damping": {
+          "architecture_fidelity": 0.24440031367006412,
+          "baseline_depth6_linear_fidelity": 0.018044484673680326,
+          "ratio_over_baseline": 13.544322162136682
+        }
+      }
+    },
+    {
+      "label": "high_accuracy_non_knee_unique",
+      "score": {
+        "accuracy": 0.9286259412765503,
+        "depth": 10.024408102035522,
+        "neg_log_grad_var": 0.8957137089069493
+      },
+      "architecture": {
+        "depth": 3,
+        "n_qubits": 8,
+        "entanglement": [
+          "circular"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          3
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      },
+      "channels": {
+        "depolarizing": {
+          "architecture_fidelity": 0.006347472196180804,
+          "baseline_depth6_linear_fidelity": 0.005242467199666139,
+          "ratio_over_baseline": 1.2107795727525077
+        },
+        "amplitude_damping": {
+          "architecture_fidelity": 0.04708043450402645,
+          "baseline_depth6_linear_fidelity": 0.04385112655327665,
+          "ratio_over_baseline": 1.073642531094985
+        },
+        "phase_damping": {
+          "architecture_fidelity": 0.1823702350173854,
+          "baseline_depth6_linear_fidelity": 0.04385112420073001,
+          "ratio_over_baseline": 4.158849706625068
+        }
+      }
+    },
+    {
+      "label": "low_depth_remaining_unique",
+      "score": {
+        "accuracy": 0.9190572500228882,
+        "depth": 8.734503984451294,
+        "neg_log_grad_var": 0.9523260183856231
+      },
+      "architecture": {
+        "depth": 2,
+        "n_qubits": 10,
+        "entanglement": [
+          "linear"
+        ],
+        "rotation_gates": [
+          [
+            "RY"
+          ]
+        ],
+        "layer_depths": [
+          2
+        ],
+        "parametrization": [
+          "hardware-efficient"
+        ]
+      },
+      "channels": {
+        "depolarizing": {
+          "architecture_fidelity": 0.01391768195797762,
+          "baseline_depth6_linear_fidelity": 0.0013152268243367931,
+          "ratio_over_baseline": 10.581963278460087
+        },
+        "amplitude_damping": {
+          "architecture_fidelity": 0.09841671815620641,
+          "baseline_depth6_linear_fidelity": 0.01804449134771774,
+          "ratio_over_baseline": 5.454114292263169
+        },
+        "phase_damping": {
+          "architecture_fidelity": 0.2764938543643806,
+          "baseline_depth6_linear_fidelity": 0.018044484673680326,
+          "ratio_over_baseline": 15.32290111713051
+        }
+      }
+    }
+  ],
+  "notes": [
+    "Representative architectures are decoded directly from moqas_pareto_results.json.",
+    "Depth-6 baseline uses the linear template from multi_noise_validation_verified.py.",
+    "Selection policy: knee + high-accuracy non-knee unique + lowest-depth remaining unique.",
+    "Mixed-state bridge is capped at n <= 10 for tractable simulation time."
+  ]
+}

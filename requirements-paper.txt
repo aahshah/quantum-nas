@@ -1,0 +1,9 @@
+# Pin core deps for paper reproduction (adjust versions for your env)
+torch>=2.0
+numpy>=1.22
+scipy>=1.9
+scikit-learn>=1.2
+pennylane>=0.34
+matplotlib>=3.7
+# Optional polished figures:
+scienceplots>=2.0

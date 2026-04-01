@@ -11,6 +11,9 @@ venv/
 # Jupyter Notebooks
 .ipynb_checkpoints
 
+# Paper pipeline (regenerate with run_moqas_pipeline.py)
+paper_dataset.pkl
+
 # Logs and Temporary Output
 *.log
 *_output.txt

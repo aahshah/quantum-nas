@@ -2,7 +2,9 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import pennylane as qml
-from quantum_nas import HARDWARE_SPECS, ArchitectureSampler, ImprovedBipartiteGraphBuilder, NSGA2Search, GraphTransformerPredictor
+import json
+from pathlib import Path
+from quantum_nas import HARDWARE_SPECS, ArchitectureSampler
 
 def compute_gradient_variance(arch, n_qubits, n_samples=25):
     """
@@ -38,7 +40,11 @@ def compute_gradient_variance(arch, n_qubits, n_samples=25):
 
         # 3. Cost Function
         if getattr(arch, 'cost_type', 'local') == 'global':
-            return qml.expval(qml.operation.Tensor(*[qml.PauliZ(i) for i in range(n_qubits)]))
+            # Global cost: tensor product of PauliZ on all qubits (triggers BP)
+            obs = qml.PauliZ(0)
+            for i in range(1, n_qubits):
+                obs = obs @ qml.PauliZ(i)
+            return qml.expval(obs)
         else:
             return qml.expval(qml.PauliZ(0))
 
@@ -129,15 +135,48 @@ def run_scaling_benchmark():
     plt.figure(figsize=(8, 6))
     plt.semilogy(qubit_range, results['Global'], 'r-o', label='Standard (Global Cost)')
     plt.semilogy(qubit_range, results['Local'], 'b-s', label='Standard (Local Cost)')
-    plt.semilogy(qubit_range, results['NAS'], 'g-^', linewidth=3, label='QNAS Optimized')
+    plt.semilogy(qubit_range, results['NAS'], 'g-^', linewidth=3, label='MO-QAS')
     
     plt.xlabel('Number of Qubits')
     plt.ylabel('Gradient Variance (Log Scale)')
-    plt.title('Beating the Barren Plateau: Gradient Scaling')
     plt.grid(True, which="both", ls="-", alpha=0.5)
     plt.legend()
     plt.savefig('barren_plateau_proof.png')
     print("Plot saved to barren_plateau_proof.png")
+
+    # Power-law fit: Var = C * n^slope  =>  log(Var) = log(C) + slope * log(n)
+    qubit_arr = np.array(qubit_range, dtype=float)
+    slopes = {}
+    for name, var_list in results.items():
+        var_arr = np.array(var_list, dtype=float)
+        # Avoid log(0)
+        var_arr = np.maximum(var_arr, 1e-20)
+        log_n = np.log(qubit_arr)
+        log_var = np.log(var_arr)
+        # Linear fit: log_var = slope * log_n + intercept
+        slope, intercept = np.polyfit(log_n, log_var, 1)
+        slopes[name] = {
+            'slope': float(slope),
+            'exponent': float(slope),  # Var ~ n^slope
+            'intercept': float(intercept),
+            'prefactor': float(np.exp(intercept))
+        }
+        print(f"  {name}: slope (exponent) = {slope:.3f}  =>  Var ~ n^{slope:.3f}")
+
+    # Save JSON with raw data and fitted slopes
+    output = {
+        'qubit_range': qubit_range,
+        'results': {k: [float(v) for v in vals] for k, vals in results.items()},
+        'power_law_fits': slopes,
+        'note': 'Gradient variance scales as Var ~ n^exponent; negative exponent = barren plateau'
+    }
+    out_path = Path('experiments/gradient_scaling_results.json')
+    out_path.parent.mkdir(exist_ok=True)
+    with open(out_path, 'w') as f:
+        json.dump(output, f, indent=2)
+    print(f"Saved gradient scaling data to {out_path}")
+
+    return results, slopes
 
 if __name__ == "__main__":
     run_scaling_benchmark()

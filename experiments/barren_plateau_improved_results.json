@@ -1,0 +1,19 @@
+{
+  "depth_2": {
+    "mean": 0.00740818220681718,
+    "std": 8.673617379884035e-19,
+    "n_trials": 30
+  },
+  "depth_6": {
+    "mean": 0.004065696597405992,
+    "std": 0.0,
+    "n_trials": 30
+  },
+  "comparison": {
+    "improvement_factor": 1.8221187555736196,
+    "theoretical_improvement": 1.8221188003905089
+  },
+  "statistics": {
+    "t_test_p_value": 0.0
+  }
+}

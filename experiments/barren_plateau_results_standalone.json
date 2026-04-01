@@ -1,0 +1,17 @@
+{
+  "depth_2": {
+    "mean_variance": 1e-10,
+    "std_variance": 0.0,
+    "mean_risk": 0.9999,
+    "n_samples": 20
+  },
+  "depth_6": {
+    "mean_variance": 1e-10,
+    "std_variance": 0.0,
+    "mean_risk": 0.9999,
+    "n_samples": 20
+  },
+  "comparison": {
+    "improvement_factor": 0.5
+  }
+}

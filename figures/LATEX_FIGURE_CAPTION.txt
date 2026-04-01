@@ -1,0 +1,6 @@
+% Paste into your paper where you reference the heatmap figure (fig:heatmap):
+Figure~\ref{fig:heatmap} presents signal fidelity across all noise 
+levels and both architectures as a color-encoded grid, confirming 
+that the Depth-2 MO-QAS architecture consistently retains higher 
+fidelity than the Depth-6 baseline across all noise models and 
+probabilities tested.

@@ -1,0 +1,53 @@
+{
+  "source_moqas_json": "experiments/moqas_pareto_results.json",
+  "knee_architecture": {
+    "depth": 2,
+    "n_qubits": 10,
+    "entanglement": [
+      "circular"
+    ],
+    "rotation_gates": [
+      [
+        "RY"
+      ]
+    ],
+    "layer_depths": [
+      2
+    ],
+    "parametrization": [
+      "hardware-efficient"
+    ]
+  },
+  "gradient_statistic": "mean coordinate-wise variance over parameter-shift gradients",
+  "n_samples": 40,
+  "result": {
+    "knee_gradient_variance": 1.3004683695329589e-08
+  },
+  "additional_representative": {
+    "label": "low_depth_remaining_unique",
+    "architecture": {
+      "depth": 2,
+      "n_qubits": 10,
+      "entanglement": [
+        "linear"
+      ],
+      "rotation_gates": [
+        [
+          "RY"
+        ]
+      ],
+      "layer_depths": [
+        2
+      ],
+      "parametrization": [
+        "hardware-efficient"
+      ]
+    },
+    "gradient_variance": 3.5256676972032105e-05
+  },
+  "comparison": {
+    "gradient_scaling_reference_json": "experiments/gradient_scaling_results.json",
+    "nas_template_variance_at_same_n": 0.0008398893231997054,
+    "ratio_knee_over_nas_template": 1.5483806420810267e-05
+  }
+}
