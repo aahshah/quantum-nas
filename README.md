@@ -1,63 +1,99 @@
-# Multi-Objective Quantum Architecture Search (MO-QAS)
+# MO-QAS: Multi-Objective Quantum Architecture Search
 
-## Project Overview
-This project implements a **Multi-Objective Quantum Architecture Search** framework designed to find quantum circuits that are both **expressive (accurate)** and **noise-resilient (efficient)**.
+Code for **"Multi-Objective Quantum Architecture Search for Noise-Resilient Circuits with Barren Plateau Mitigation"**, accepted at QNLPAI 2026 (Springer post-proceedings).
 
-Unlike standard approaches that only optimize for accuracy on ideal simulators (often resulting in deep, unstable circuits), MO-QAS explicitly optimizes for circuit depth as a second objective. This allows it to discover "knee-point" architectures that perform significantly better on noisy NISQ hardware.
+Aahan Shah, Armaan Sharma, Hana Sultana · Texas Research Association, UT Austin
 
-## Key Features
-- **NSGA-II Search**: Evolutionary algorithm for multi-objective optimization.
-- **Graph Transformer Predictor**: A neural predictor that estimates circuit accuracy from its graph representation, avoiding expensive simulations during search.
-- **Multi-Noise Validation**: Robustness verification across Depolarizing, T1, and T2 noise models.
+## The problem
 
-## Getting Started
+Most quantum architecture search (QAS) optimizes for accuracy on an ideal simulator. That favors deep, heavily entangled circuits, which run into two problems on real hardware:
 
-### 1. Prerequisites
-- Python 3.8+
-- PyTorch
-- PennyLane
-- Matplotlib, Seaborn, Scikit-learn
+1. **Gate noise grows with depth**, so circuits that look good in simulation degrade on NISQ devices.
+2. **Barren plateaus** make gradients vanish exponentially with qubit count, so the circuit can't be trained at all. Hardware noise can cause barren plateaus on its own, even in circuits that were trainable in simulation.
 
-### 2. Core File Structure
-To understand and expand this project, focus on these files:
+## What MO-QAS does
 
-**The Core Engine:**
-- `quantum_nas.py`: **Main Library**. Contains all core classes:
-    - `HybridArchitecture`: Defines the circuit structure.
-    - `ArchitectureSampler`: Generates random circuits for the search space.
-    - `BipartiteGraphBuilder`: Converts circuits to graphs for the predictor.
-    - `GraphTransformerPredictor`: The AI model that predicts circuit performance.
-    - `HardwareSpec`: Defines hardware constraints (e.g., IBM Quantum, IonQ).
+MO-QAS treats trainability as an explicit objective instead of hoping it shows up. NSGA-II searches over three objectives at once:
 
-**Running Experiments:**
-- `benchmark.py`: **Main Entry Point**. Runs the full NSGA-II search and compares it against random and single-objective baselines.
-- `multi_noise_validation_verified.py`: **Validation Script**. Tests the discovered architectures against various noise models to prove their robustness.
+| Objective | Direction | Signal |
+|---|---|---|
+| Accuracy | maximize | predicted task accuracy |
+| Depth | minimize | estimated circuit depth |
+| Trainability | maximize | −log V̂, where V̂ is the estimated gradient variance deficit |
 
-**Data & Artifacts:**
-- `dataset_1000.pkl`: Validated dataset of 1,000 architectures used to train the predictor.
-- `quantum_cache.pkl`: Result cache to speed up repeated runs.
+Two design choices make this work:
 
-### 3. How to Run
-**To run a new search:**
+- **Trainability-relevant choices are search variables.** Cost-function locality (local vs. global) and parameter initialization are searched alongside gates and entanglement topology, instead of being fixed by hand.
+- **A Graph Transformer surrogate** encodes each circuit as a graph and predicts all three objectives, so the evolutionary search never calls a simulator in its inner loop.
+
+## Results
+
+| | Result |
+|---|---|
+| Surrogate rank correlation (Spearman ρ) | depth 0.961 · accuracy 0.740 · trainability 0.652 |
+| Simulator accuracy across the Pareto front | 0.86 to 0.98 |
+| Fidelity under 10% depolarizing noise | depth-2 circuits keep 2.55× the fidelity of depth-6 circuits |
+
+Noise robustness was also checked under amplitude damping (T1) and phase damping (T2), across three random seeds.
+
+## Installation
+
 ```bash
-python benchmark.py
+git clone https://github.com/aahshah/quantum-nas.git
+cd quantum-nas
+pip install -r requirements.txt
 ```
 
-**To validate noise resilience:**
+Requires Python 3.8+. Main dependencies: PyTorch, PennyLane, NumPy, SciPy, scikit-learn, Matplotlib.
+
+## Reproducing the paper
+
+Run the full pipeline: build the dataset, train the surrogate, run the three-objective NSGA-II search, validate under noise, then compute gradients and make the figures.
+
 ```bash
-python multi_noise_validation_verified.py
+python run_moqas_pipeline.py
 ```
 
-## Expanding the Project
-Comparison of files needed vs. artifacts.
+For a fast smoke test with a small dataset and a short search:
 
-**To add new objectives (e.g., Energy, Gate Cost):**
-1.  Modify `HardwareSpec` in `quantum_nas.py` to define the new cost metric.
-2.  Update `GraphTransformerPredictor` in `quantum_nas.py` to output the new metric.
-3.  Update the NSGA-II loop in `benchmark.py` to optimize for this third objective.
+```bash
+python run_moqas_pipeline.py --quick
+```
 
-**To add new hardware backends:**
-1.  Add a new entry to the `HARDWARE_SPECS` dictionary in `quantum_nas.py`.
+Useful flags: `--device cuda` trains the surrogate on GPU. `--skip-noise`, `--skip-gradient` and `--skip-figures` skip individual stages (noise validation is the slowest). Pareto-front results are saved to `experiments/moqas_pareto_results.json`.
 
-## Clean Up
-A large number of temporary validation scripts (`verification_*.py`, `debug_*.py`) and output logs (`*.txt`) were generated during the research phase. These have been moved to the `archive/` directory to keep the workspace clean.
+## Repository structure
+
+```
+quantum_nas.py                     Core library: circuit definition, sampler, graph builder,
+                                   Graph Transformer surrogate, hardware specs
+run_moqas_pipeline.py              End-to-end paper pipeline (entry point)
+run_nsga2_three_objectives.py      Three-objective NSGA-II search
+barren_plateau_analyzer.py         Gradient-variance / trainability estimation
+multi_noise_validation_verified.py Noise validation (depolarizing, T1, T2)
+figures/                           Scripts that produce the paper's figures
+experiments/                       Barren plateau, gradient-scaling and Pareto/noise experiments + results
+multi_noise_results_*.json         Noise validation results (seeds 42, 123, 999)
+benchmark.py                       Earlier two-objective (accuracy, depth) search, kept as a baseline
+dataset_1000.pkl                   1,000 simulator-labeled architectures used to train the surrogate
+docs/                              Notes on the barren plateau integration and quick starts
+archive/                           Earlier experiments and drafts
+```
+
+## Extending
+
+- **New objective** (e.g. gate cost, energy): add the metric to `HardwareSpec` in `quantum_nas.py`, add an output head to `GraphTransformerPredictor`, and add it to the NSGA-II objective list.
+- **New hardware backend**: add an entry to `HARDWARE_SPECS` in `quantum_nas.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{shah2026moqas,
+  title     = {Multi-Objective Quantum Architecture Search for Noise-Resilient Circuits with Barren Plateau Mitigation},
+  author    = {Shah, Aahan and Sharma, Armaan and Sultana, Hana},
+  booktitle = {Proceedings of QNLPAI 2026},
+  publisher = {Springer},
+  year      = {2026}
+}
+```
+
